@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8" />
+		<title></title>
+		<style>
+		  .wrap{
+            margin: 20px auto 0;
+            width: 490px;
+            height: 580px;
+            border: 1px solid #000;
+            position: relative;
+        }
+
+        .wrap .item{
+            width: 150px;
+            float: left;
+            margin: 5px;
+            border-radius: 5px;
+            border: 1px solid lightgray;
+            text-align: center;
+            cursor: move; 
+        }
+
+        .wrap .item img{
+            width: 150px;
+            height: 180px;
+        }
+
+        .moving{
+            border: 1px dashed gray;
+            background: white;
+        }
+        .wrap div.active{
+            width: 150px;
+            height: 180px;
+            position: absolute;
+            background: goldenrod;
+            box-shadow: 0 0 2px 2px #555;
+            border-radius: 5px;
+            z-index: 10;
+        }
+		</style>
+	</head>
+	<body>	
+		
+	
+	
+	
+	<div class="wrap" id="gridDemo">
+        <div class="item">
+        	<div>
+        		<img src="http://presale.jhtsoft.com/picms/113bb976f38e03.png">
+        		<p>阳澄湖大闸蟹</p>
+        	</div>
+        	<div>158元</div>
+        	<div>上架</div>
+        </div>
+        <div class="item">
+        	<div>
+        		<img src="http://presale.jhtsoft.com/picms/10a4ed86e224fc.jpg">
+        		<p>苏州水蜜桃</p>
+        	</div>
+        	<div>158元</div>
+        	<div>上架</div>
+        </div>
+        <div class="item">
+        	<div>
+        		<img src="http://presale.jhtsoft.com/picms/10a48cf1fc21be.png">
+        	<p>蔬菜水果</p>
+        	</div>
+        	<div>158元</div>
+        	<div>上架</div>
+        </div>        
+        <div class="item">
+        	<div>
+        		<img src="http://presale.jhtsoft.com/picms/10a483d521a367.png">
+        	<p>茶叶</p>
+        	</div>
+        	<div>158元</div>
+        	<div>上架</div>
+        </div>
+        <div class="item">
+        	<div>
+        		<img src="http://presale.jhtsoft.com/picms/caeac40a2fca0.jpg">
+        	<p>猪肉鸡肉鸭肉鱼肉</p>
+        	</div>
+        	<div>158元</div>
+        	<div>上架</div>
+        </div>
+        <div class="item">
+        	<div>
+        		<img src="http://presale.jhtsoft.com/picms/19e9054f9541f.jpg">
+        	<p>虾肉</p>
+        	</div>
+        	<div>158元</div>
+        	<div>上架</div>
+        </div>
+    </div>
+	
+	
+    
+    <script src="Sortable.js"></script>
+    <script type="text/javascript">
+    	var gridDemo = document.getElementById('gridDemo');
+    new Sortable(gridDemo, {
+        animation: 150,
+        ghostClass: 'blue-background-class'
+    });
+    </script>
+	</body>
+</html>

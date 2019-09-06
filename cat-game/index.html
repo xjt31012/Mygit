@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>index</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=0">
+    <script type="text/javascript" src="js/dnd.min.js"></script>
+
+    <style>
+      html, body {
+        width: 100%;
+        height: 100%;
+        padding: 0;
+        margin: 0;
+        overflow: hidden;
+      }
+      .app-root {
+        width: 100%;
+        height: 100%;
+        padding: 20px;
+        box-sizing: border-box;
+        background: #fff;
+        overflow: auto;
+      }
+      .lists {
+      }
+      .draggable-node {
+        position: relative;
+        display: inline-block;
+        margin: 10px;
+        padding: 5px 10px;
+        height: 30px;
+        box-sizing: border-box;
+        background: orange;
+      }
+      .draggable-node:after {
+        content: '';
+        position: absolute;
+        left: 100%;
+        top: 0;
+        display: block;
+        width: 0;
+        height: 0;
+        border-top: 15px solid transparent;
+        border-left: 5px solid orange;
+        border-bottom: 15px solid transparent;
+      }
+      .boxs {
+        margin: 20px auto;
+      }
+      .droppable-box {
+        position: relative;
+        float: left;
+        margin-right: 10px;
+        margin-bottom: 10px;
+        width: 200px;
+        height: 200px;
+        border: 1px solid #999;
+      }
+      .placeholder {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        line-height: 200px;
+        text-align: center;
+        color: #ccc;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="app-root">
+      <!-- <div class="draggable-node drag1">
+        <span class="label">标签1</span>
+      </div>
+      <div class="draggable-node drag2">
+        <span class="label">标签2</span>
+      </div>
+      <div class="draggable-node drag3">
+        <span class="label">标签3</span>
+      </div> -->
+
+      <div class="boxs">
+        <div class="droppable-box drop1">
+          <div class="draggable-node drag1">
+            <span class="label">标签1</span>
+          </div>
+        </div>
+        <div class="droppable-box drop2">
+          <div class="draggable-node drag2">
+            <span class="label">标签2</span>
+          </div>
+        </div>
+        <div class="droppable-box drop3">
+          <div class="placeholder">
+            <span>删除区</span>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </body>
+  <script>
+    window.onload = function () {
+      var Drag = dnd.Drag
+      var Drop = dnd.Drop
+      var rootNode = document.getElementsByClassName('app-root')[0]
+      var draggableNodes = document.getElementsByClassName('draggable-node')
+      for (var i = 0; i < draggableNodes.length; i++) {
+        new Drag(draggableNodes[i], {
+          data: i + 1,
+          onDragEnd: function (params) {
+            !params.target && params.methods.removeDragedNode('back')
+          }
+        })
+      }
+      /**
+       * @ 描述 拖拽后执行的操作
+       * @ param {num} string drop的class
+       * @ param {nodeTrue} boolean 拖拽到别的容器 
+       * @ param {isNode} boolean 容器内是否已有元素
+      */
+      function dropOn(params,num){
+        let isNode=document.querySelector(".drop" + num + " .draggable-node");
+        if(isNode){
+          params.methods.removeDragedNode('back')
+          // return false;
+        }else{
+          params.methods.removeDragedNode('fade')
+          var newNode = params.sourceNode.cloneNode(true)
+          params.el.appendChild(newNode)
+          createNewDrap(newNode)
+        }
+        
+      }
+      new Drop('.drop1', {
+        onDragStart: function (params) {
+            params.el.style.background = 'rgba(0, 0, 255, 0.1)'
+        },
+        onDragEnter: function (params) {
+            params.el.style.background = 'rgba(0, 0, 255, 0.2)'
+        },
+        onDragLeave: function (params) {
+            params.el.style.background = 'rgba(0, 0, 255, 0.1)'
+        },
+        onDragEnd: function (params) {
+          params.el.style.background = '#fff'
+        },
+        onDrop: function (params) {
+          dropOn(params,1)
+        }
+      })
+      new Drop('.drop2', {
+        onDragStart: function (params) {
+            params.el.style.background = 'rgba(0, 0, 255, 0.1)'
+        },
+        onDragEnter: function (params) {
+            params.el.style.background = 'rgba(0, 0, 255, 0.2)'
+        },
+        onDragLeave: function (params) {
+            params.el.style.background = 'rgba(0, 0, 255, 0.1)'
+        },
+        onDragEnd: function (params) {
+          params.el.style.background = '#fff'
+        },
+        onDrop: function (params) {
+          dropOn(params,2)
+        }
+      })
+      new Drop('.drop3', {
+        onDragStart: function (params) {
+          params.el.style.background = 'rgba(0, 0, 255, 0.1)'
+        },
+        onDragEnter: function (params) {
+          params.el.style.background = 'rgba(255, 0, 0, 0.3)'
+        },
+        onDragLeave: function (params) {
+          params.el.style.background = 'rgba(0, 0, 255, 0.1)'
+        },
+        onDragEnd: function (params) {
+          params.el.style.background = '#fff'
+        },
+        onDrop: function (params) {
+          params.methods.removeDragedNode('blost')
+          rootNode.removeChild(params.sourceNode)
+        }
+      })
+      /**
+       * 放入重新创建可拖拽元素
+       * @param  {[type]} element [description]
+       * @return {[type]}         [description]
+       */
+      function createNewDrap (element) {
+        new Drag(element, {
+          onDragEnd: function (params) {
+            // console.log(params.el)
+            var parent = params.el.parentElement
+            parent.removeChild(params.el)
+          }
+        })
+      }
+    }
+  </script>
+</html>

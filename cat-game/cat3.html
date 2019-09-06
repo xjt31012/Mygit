@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>demo1</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=0">
+    <script type="text/javascript" src="js/dnd.min.js"></script>
+    <style>
+        html {
+            font-size: 16px
+        }
+        @media screen and (min-width:320px) {
+            html {
+            font-size: calc(100% + 2 * (100vw - 320px)/ 39);
+            font-size: calc(13px + 2 * (100vw - 320px)/ 39)
+            }
+        }
+        @media screen and (min-width:375px) {
+            html {
+            font-size: calc(100% + 2 * (100vw - 375px)/ 39);
+            font-size: calc(16px + 2 * (100vw - 375px)/ 39)
+            }
+        }
+        @media screen and (min-width:414px) {
+            html {
+            font-size: calc(112.5% + 4 * (100vw - 414px)/ 586);
+            font-size: calc(18px + 4 * (100vw - 414px)/ 586)
+            }
+        }
+        html,
+        body{
+            margin: 0;
+            padding:0;
+        }
+      .app-root {
+        width: 100%;
+        background: #fff;
+        padding: .625rem;
+        -webkit-box-sizing: border-box;
+        box-sizing: border-box;
+      }
+      .draggable-node {
+        margin: .3125rem;
+        /* display: inline-block; */
+        width: 4.75rem;
+        height: 2.75rem;
+        background: url(images/110439b6e.png) no-repeat;
+        background-size: 292%;
+      }
+      .drag1,.drag3{
+        background-position: 0 -2.875rem;
+      }
+      .drag2{
+        background-position: -5.6875rem -2.625rem;
+      }
+      .droppable-box {
+        position: relative;
+        margin: .9375rem .3125rem;
+        width: 4.625rem;
+        height: 2.5rem;
+        border: 1px solid lightgray;
+        text-align: center;
+        cursor: move;
+        display: inline-block;
+        border-radius: 100%;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="app-root">
+      <div class="boxs">
+        <div class="droppable-box drop1">
+            <div class="draggable-node drag1">
+            </div>
+        </div>
+        <div class="droppable-box drop2">
+            <div class="draggable-node drag2">
+            </div>
+        </div>
+        <div class="droppable-box drop4">
+            <div class="draggable-node drag3">
+            </div>
+        </div>
+        <div class="droppable-box drop5">
+            
+        </div>
+        <div class="droppable-box drop6">
+            
+        </div>
+        <div class="droppable-box drop7">
+            
+        </div>
+        <div class="droppable-box drop8">
+            
+        </div>
+        <div class="droppable-box drop9">
+            
+        </div>
+        <div class="droppable-box drop10">
+            
+        </div>
+        <div class="droppable-box drop11">
+            
+        </div>
+        <div class="droppable-box drop12">
+            
+        </div>
+        <div class="droppable-box drop3">
+          
+        </div>
+      </div>
+
+    </div>
+  </body>
+  <script>
+    window.onload = function () {
+        var Drag = dnd.Drag
+        var Drop = dnd.Drop
+        var rootNode = document.getElementsByClassName('app-root')[0]
+        var draggableNodes = document.getElementsByClassName('draggable-node')
+        for (var i = 0; i < draggableNodes.length; i++) {
+            new Drag(draggableNodes[i], {
+                data: i + 1,
+                onDragEnd: function (params) {
+                    !params.target && params.methods.removeDragedNode('back')
+                }
+            })
+        }
+        /**
+         * 放入重新创建可拖拽元素
+         * @param  {[type]} element [description]
+         * @param {sourceNode} 被复制的元素
+         * @return {[type]}         [description]
+         */
+        function createNewDrap (element,nodeTrue,isNode,sourceNode) {
+            if(sourceNode){
+                var parent = sourceNode.parentElement
+                if(parent){
+                    parent.removeChild(sourceNode);
+                }
+            }
+            new Drag(element, {
+                onDragEnd: function (params) {
+                    if(nodeTrue){
+                        params.methods.removeDragedNode('back')
+                        return false;
+                    }
+                }
+            })
+        }
+        /**
+         * @ 描述 拖拽后执行的操作
+         * @ param {num} string drop的class
+         * @ param {nodeTrue} boolean 拖拽到别的容器 
+         * @ param {isNode} boolean 容器内是否已有元素
+        */
+        function dropOn(params,num){
+            let isNode=document.querySelector(".drop" + num + " .draggable-node");
+            let nodeTrue=0;
+            if(isNode){
+                nodeTrue=0;
+                params.methods.removeDragedNode('back')
+            }else{
+                nodeTrue=1
+                params.methods.removeDragedNode('fade')
+                var newNode = params.sourceNode.cloneNode(true)
+                params.el.appendChild(newNode)
+                createNewDrap(newNode,nodeTrue,isNode,params.sourceNode)
+            }
+        }
+        new Drop('.drop1', {
+            onDrop: function (params) {
+                dropOn(params,1)
+            }
+        })
+        new Drop('.drop2', {
+            onDrop: function (params) {
+                dropOn(params,2)
+            }
+        })
+        new Drop('.drop3', {
+            onDrop: function (params) {
+                dropOn(params,3)
+            }
+        })
+        new Drop('.drop4', {
+            onDrop: function (params) {
+                dropOn(params,4)
+                
+            }
+        })
+        new Drop('.drop5', {
+            onDrop: function (params) {
+                dropOn(params,5)
+            }
+        })
+        new Drop('.drop6', {
+            onDrop: function (params) {
+                dropOn(params,6)
+            }
+        })
+        new Drop('.drop7', {
+            onDrop: function (params) {
+                dropOn(params,7)
+            }
+        })
+        new Drop('.drop8', {
+            onDrop: function (params) {
+                dropOn(params,8)
+            }
+        })
+        new Drop('.drop9', {
+            onDrop: function (params) {
+                dropOn(params,9)
+            }
+        })
+        new Drop('.drop10', {
+            onDrop: function (params) {
+                dropOn(params,10)
+            }
+        })
+        new Drop('.drop11', {
+            onDrop: function (params) {
+                dropOn(params,11)
+            }
+        })
+        new Drop('.drop12', {
+            onDrop: function (params) {
+                dropOn(params,12)
+            }
+        })
+    }
+  </script>
+</html>

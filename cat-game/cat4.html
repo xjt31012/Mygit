@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8" />
+		<title>叠猫猫</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=0">
+		<style>
+			.wrap{
+				position: absolute;
+				top:0;
+			}
+			.item{
+				width: 74px;
+				height: 40px;
+				border-radius: 100%;
+				margin: 5px;
+				border: 1px solid lightgray;
+				text-align: center;
+				cursor: move; 
+				display: inline-block;
+			}
+			.catImg,
+			.pinkCat{
+				background: url(images/110439b6e.png) no-repeat;
+				background-size: 292%;
+			}
+			.catImg{
+				background-position: 0 -46px;
+			}
+			.pinkCat{
+				background-position: -91px -42px;
+			}
+			.catShake{
+				animation: shake .2s ease-in;
+				--webkit-animation: shake .2s ease-in;
+			}
+			@keyframes shake {
+				0%,
+				10%,
+				20%,
+				30%,
+				50%
+				{
+					transform: translateY(0);
+					transform: translateY(0)
+				}
+				51%,
+				85%
+				{
+					transform: translateY(10px);
+					transform: translateY(10px)
+				}
+				86%,
+				100%
+				 {
+					transform: translateY(0);
+					transform: translateY(0)
+				}
+			}
+			@-webkit-keyframes shake {
+				0%,
+				10%,
+				20%,
+				30%,
+				50%
+				{
+					transform: translateY(0);
+					transform: translateY(0)
+				}
+				51%,
+				85%
+				{
+					transform: translateY(10px);
+					transform: translateY(10px)
+				}
+				86%,
+				100%
+				 {
+					transform: translateY(0);
+					transform: translateY(0)
+				}
+			}
+			.catCon{
+				position: relative;
+			}
+			.wrap i{
+				margin: 5px;
+				display: inline-block;
+				width: 76px;
+				height: 44px;
+			}
+			.blue-background-class{
+				opacity: 0;
+			}
+		</style>
+	</head>
+	<body>	
+	<div class="catCon">
+		<div class="cycleItem">
+			<div class="item"></div>
+			<div class="item"></div>
+			<div class="item"></div>
+			<div class="item"></div>
+			<div class="item"></div>
+			<div class="item"></div>
+			<div class="item"></div>
+			<div class="item"></div>
+			<div class="item"></div>
+			<div class="item"></div>
+			<div class="item"></div>
+			<div class="item"></div>
+		</div>
+		<div class="wrap" id="gridDemo">
+			<i class="catImg"></i>
+			<i class="pinkCat"></i>
+			<i class="catImg"></i>
+			<i class="pinkCat"></i>
+			<i></i>
+			<i></i>
+			<i></i>
+			<i></i>
+			<i></i>
+			<i></i>
+			<i></i>
+			<i></i>
+		</div>
+	</div>
+    <script src="js/Sortable.js"></script>
+    <script type="text/javascript">
+    	const gridDemo = document.getElementById('gridDemo');
+		new Sortable(gridDemo, {
+			animation: 150,
+			ghostClass: 'blue-background-class',//拖动时元素的副本class
+			scroll:false //拖动时容器是否滚动,默认为true为滚动
+		});
+		// 取随机下标给元素动画
+		let cats=document.querySelectorAll(".wrap i");
+		let catIndex="";
+		setInterval(function(){
+			catIndex=parseInt(Math.random()*cats.length);
+			cats[catIndex].classList.add("catShake");
+		},3000);
+		setInterval(function(){
+			cats[catIndex].classList.remove("catShake");
+		},5000)
+		
+    </script>
+</html>
